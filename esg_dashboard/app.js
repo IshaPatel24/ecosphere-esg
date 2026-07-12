@@ -18,7 +18,7 @@ const DEFAULT_STATE = {
     },
     leaderboard: [
         { name: "Isha Patel", dept: "Operations", xp: 380, avatar: "IP" },
-        { name: "Yogesh Modi", dept: "Human Resources", xp: 420, avatar: "YM" },
+        { name: "Rajesh Kumar", dept: "Human Resources", xp: 420, avatar: "RK" },
         { name: "Siddharth Sen", dept: "IT", xp: 290, avatar: "SS" },
         { name: "Ananya Rao", dept: "Operations", xp: 150, avatar: "AR" },
         { name: "Rohan Varma", dept: "IT", xp: 80, avatar: "RV" }
@@ -88,8 +88,9 @@ function loadState() {
     if (saved) {
         try {
             state = JSON.parse(saved);
-            // Safeguard: Reset storage if default user changed
-            if (state.employee && state.employee.name !== DEFAULT_STATE.employee.name) {
+            // Safeguard: Reset storage if default user changed or old name exists in leaderboard
+            const hasOldName = state.leaderboard && state.leaderboard.some(u => u.name === "Yogesh Modi");
+            if (hasOldName || (state.employee && state.employee.name !== DEFAULT_STATE.employee.name)) {
                 state = JSON.parse(JSON.stringify(DEFAULT_STATE));
                 saveState();
             }
