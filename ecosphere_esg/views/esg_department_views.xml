@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_department_list" model="ir.ui.view">
+        <field name="name">esg.department.list</field>
+        <field name="model">esg.department</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="head_id"/>
+                <field name="parent_id"/>
+                <field name="employee_count"/>
+                <field name="latest_total_score" widget="progressbar"/>
+                <field name="status" decoration-success="status=='active'" decoration-muted="status=='inactive'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_esg_department_form" model="ir.ui.view">
+        <field name="name">esg.department.form</field>
+        <field name="model">esg.department</field>
+        <field name="arch" type="xml">
+            <form>
+                <header/>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_scores" type="object" class="oe_stat_button" icon="fa-line-chart">
+                            <field name="latest_total_score" widget="statinfo" string="ESG Score"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="head_id"/>
+                            <field name="parent_id"/>
+                        </group>
+                        <group>
+                            <field name="employee_count"/>
+                            <field name="status"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Employees">
+                            <field name="employee_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="job_id"/>
+                                    <field name="xp"/>
+                                    <field name="points"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Goals">
+                            <field name="goal_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="target_value"/>
+                                    <field name="current_value"/>
+                                    <field name="progress" widget="progressbar"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_esg_department" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="res_model">esg.department</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

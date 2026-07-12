@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_csr_activity_list" model="ir.ui.view">
+        <field name="name">esg.csr.activity.list</field>
+        <field name="model">esg.csr.activity</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="department_id"/>
+                <field name="date"/>
+                <field name="participant_count"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_csr_activity_form" model="ir.ui.view">
+        <field name="name">esg.csr.activity.form</field>
+        <field name="model">esg.csr.activity</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_participants" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="participant_count" widget="statinfo" string="Participants"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category_id"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="location"/>
+                            <field name="points_value"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                    <notebook>
+                        <page string="Participants">
+                            <field name="participation_ids">
+                                <list editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="approval_status"/>
+                                    <field name="points_earned"/>
+                                    <field name="completion_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_csr_activity" model="ir.actions.act_window">
+        <field name="name">CSR Activities</field>
+        <field name="res_model">esg.csr.activity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_badge_kanban" model="ir.ui.view">
+        <field name="name">esg.badge.kanban</field>
+        <field name="model">esg.badge</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="unlock_rule_type"/>
+                <field name="unlock_value"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2 text-center">
+                            <img t-att-src="kanban_image('esg.badge', 'icon', record.id.raw_value)" style="width:48px;height:48px;border-radius:50%;"/>
+                            <div><strong><field name="name"/></strong></div>
+                            <div><field name="unlock_rule_type"/>: <field name="unlock_value"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_esg_badge_list" model="ir.ui.view">
+        <field name="name">esg.badge.list</field>
+        <field name="model">esg.badge</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="unlock_rule_type"/>
+                <field name="unlock_value"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_badge_form" model="ir.ui.view">
+        <field name="name">esg.badge.form</field>
+        <field name="model">esg.badge</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="icon" widget="image" class="oe_avatar"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="unlock_rule_type"/>
+                        <field name="unlock_value"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_badge" model="ir.actions.act_window">
+        <field name="name">Badges</field>
+        <field name="res_model">esg.badge</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

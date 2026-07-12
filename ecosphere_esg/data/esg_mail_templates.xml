@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Notifications are sent via message_post() in models (esg_compliance_issue,
+         esg_employee_participation, esg_challenge_participation, hr_employee,
+         esg_policy_acknowledgement). This file is a placeholder for future
+         dedicated email templates if richer HTML notifications are required. -->
+</odoo>

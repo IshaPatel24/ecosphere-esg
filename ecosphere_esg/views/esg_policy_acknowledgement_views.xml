@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_policy_ack_list" model="ir.ui.view">
+        <field name="name">esg.policy.acknowledgement.list</field>
+        <field name="model">esg.policy.acknowledgement</field>
+        <field name="arch" type="xml">
+            <list decoration-success="status=='acknowledged'" decoration-warning="status=='pending'">
+                <field name="policy_id"/>
+                <field name="employee_id"/>
+                <field name="status"/>
+                <field name="acknowledged_date"/>
+                <field name="reminder_sent"/>
+                <button name="action_acknowledge" type="object" string="Acknowledge" invisible="status == 'acknowledged'"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_esg_policy_acknowledgement" model="ir.actions.act_window">
+        <field name="name">Policy Acknowledgements</field>
+        <field name="res_model">esg.policy.acknowledgement</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

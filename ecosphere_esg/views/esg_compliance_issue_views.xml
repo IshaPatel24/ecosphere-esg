@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_compliance_issue_list" model="ir.ui.view">
+        <field name="name">esg.compliance.issue.list</field>
+        <field name="model">esg.compliance.issue</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_overdue==True" decoration-success="status in ('resolved','closed')">
+                <field name="name"/>
+                <field name="audit_id"/>
+                <field name="severity"/>
+                <field name="owner_id"/>
+                <field name="due_date"/>
+                <field name="is_overdue"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_compliance_issue_form" model="ir.ui.view">
+        <field name="name">esg.compliance.issue.form</field>
+        <field name="model">esg.compliance.issue</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Overdue" bg_color="text-bg-danger" invisible="not is_overdue"/>
+                    <group>
+                        <group>
+                            <field name="audit_id"/>
+                            <field name="severity"/>
+                            <field name="owner_id"/>
+                            <field name="due_date"/>
+                        </group>
+                        <group>
+                            <field name="is_overdue" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_esg_compliance_issue_search" model="ir.ui.view">
+        <field name="name">esg.compliance.issue.search</field>
+        <field name="model">esg.compliance.issue</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="description"/>
+                <field name="owner_id"/>
+                <filter string="Overdue" name="overdue" domain="[('is_overdue','=',True)]"/>
+                <filter string="Open" name="open" domain="[('status','=','open')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Severity" name="group_severity" context="{'group_by':'severity'}"/>
+                    <filter string="Owner" name="group_owner" context="{'group_by':'owner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_esg_compliance_issue" model="ir.actions.act_window">
+        <field name="name">Compliance Issues</field>
+        <field name="res_model">esg.compliance.issue</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_esg_compliance_issue_search"/>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+</odoo>

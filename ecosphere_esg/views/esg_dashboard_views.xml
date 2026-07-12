@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Simple dashboard entry points reusing graph/pivot views already defined -->
+    <record id="action_esg_dashboard_environmental" model="ir.actions.act_window">
+        <field name="name">Environmental Dashboard</field>
+        <field name="res_model">esg.carbon.transaction</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_esg_carbon_transaction_graph"/>
+    </record>
+
+    <record id="action_esg_dashboard_social" model="ir.actions.act_window">
+        <field name="name">Social Dashboard</field>
+        <field name="res_model">esg.employee.participation</field>
+        <field name="view_mode">list,pivot</field>
+    </record>
+
+    <record id="action_esg_dashboard_governance" model="ir.actions.act_window">
+        <field name="name">Governance Dashboard</field>
+        <field name="res_model">esg.compliance.issue</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+
+    <record id="action_esg_dashboard_overall" model="ir.actions.act_window">
+        <field name="name">ESG Overview</field>
+        <field name="res_model">esg.department.score</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_esg_department_score_graph"/>
+    </record>
+</odoo>

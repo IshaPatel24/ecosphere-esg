@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_reward_list" model="ir.ui.view">
+        <field name="name">esg.reward.list</field>
+        <field name="model">esg.reward</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="points_required"/>
+                <field name="stock"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_reward_form" model="ir.ui.view">
+        <field name="name">esg.reward.form</field>
+        <field name="model">esg.reward</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="points_required"/>
+                        <field name="stock"/>
+                        <field name="status"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_reward" model="ir.actions.act_window">
+        <field name="name">Rewards</field>
+        <field name="res_model">esg.reward</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

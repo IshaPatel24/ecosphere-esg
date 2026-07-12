@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Categories -->
+    <record id="cat_csr_environment" model="esg.category">
+        <field name="name">Environmental Cleanup</field>
+        <field name="type">csr</field>
+    </record>
+    <record id="cat_csr_education" model="esg.category">
+        <field name="name">Education &amp; Mentorship</field>
+        <field name="type">csr</field>
+    </record>
+    <record id="cat_challenge_energy" model="esg.category">
+        <field name="name">Energy Saving</field>
+        <field name="type">challenge</field>
+    </record>
+    <record id="cat_challenge_waste" model="esg.category">
+        <field name="name">Waste Reduction</field>
+        <field name="type">challenge</field>
+    </record>
+
+    <!-- Departments -->
+    <record id="dept_operations" model="esg.department">
+        <field name="name">Operations</field>
+        <field name="code">OPS</field>
+    </record>
+    <record id="dept_hr" model="esg.department">
+        <field name="name">Human Resources</field>
+        <field name="code">HR</field>
+    </record>
+    <record id="dept_it" model="esg.department">
+        <field name="name">IT</field>
+        <field name="code">IT</field>
+    </record>
+
+    <!-- Emission Factors -->
+    <record id="ef_diesel" model="esg.emission.factor">
+        <field name="name">Diesel Fuel</field>
+        <field name="source_type">fleet</field>
+        <field name="category">fuel</field>
+        <field name="unit">liter</field>
+        <field name="factor_value">2.68</field>
+    </record>
+    <record id="ef_electricity" model="esg.emission.factor">
+        <field name="name">Grid Electricity</field>
+        <field name="source_type">other</field>
+        <field name="category">electricity</field>
+        <field name="unit">kWh</field>
+        <field name="factor_value">0.42</field>
+    </record>
+    <record id="ef_air_travel" model="esg.emission.factor">
+        <field name="name">Domestic Air Travel</field>
+        <field name="source_type">expense</field>
+        <field name="category">travel</field>
+        <field name="unit">km</field>
+        <field name="factor_value">0.15</field>
+    </record>
+
+    <!-- Environmental Goal -->
+    <record id="goal_reduce_ops_emissions" model="esg.environmental.goal">
+        <field name="name">Reduce Operations Emissions 2026</field>
+        <field name="department_id" ref="dept_operations"/>
+        <field name="metric_description">Reduce CO2 emissions</field>
+        <field name="target_value">5000</field>
+        <field name="start_date" eval="'2026-01-01'"/>
+        <field name="end_date" eval="'2026-12-31'"/>
+        <field name="status">active</field>
+    </record>
+
+    <!-- Policies -->
+    <record id="policy_code_of_conduct" model="esg.policy">
+        <field name="name">Code of Conduct</field>
+        <field name="category">governance</field>
+        <field name="description">Organization-wide code of conduct policy.</field>
+    </record>
+    <record id="policy_data_privacy" model="esg.policy">
+        <field name="name">Data Privacy Policy</field>
+        <field name="category">governance</field>
+        <field name="description">Handling and protection of personal data.</field>
+    </record>
+
+    <!-- Badges -->
+    <record id="badge_green_starter" model="esg.badge">
+        <field name="name">Green Starter</field>
+        <field name="description">Earned 50 XP</field>
+        <field name="unlock_rule_type">xp_threshold</field>
+        <field name="unlock_value">50</field>
+    </record>
+    <record id="badge_sustainability_champion" model="esg.badge">
+        <field name="name">Sustainability Champion</field>
+        <field name="description">Earned 500 XP</field>
+        <field name="unlock_rule_type">xp_threshold</field>
+        <field name="unlock_value">500</field>
+    </record>
+    <record id="badge_csr_hero" model="esg.badge">
+        <field name="name">CSR Hero</field>
+        <field name="description">Completed 5 CSR activities</field>
+        <field name="unlock_rule_type">csr_completed</field>
+        <field name="unlock_value">5</field>
+    </record>
+
+    <!-- Rewards -->
+    <record id="reward_eco_bottle" model="esg.reward">
+        <field name="name">Reusable Eco Bottle</field>
+        <field name="description">Stainless steel reusable water bottle.</field>
+        <field name="points_required">100</field>
+        <field name="stock">50</field>
+    </record>
+    <record id="reward_extra_leave" model="esg.reward">
+        <field name="name">Extra Day Off</field>
+        <field name="description">Redeem for one extra day of paid leave.</field>
+        <field name="points_required">1000</field>
+        <field name="stock">10</field>
+    </record>
+
+    <!-- CSR Activity -->
+    <record id="csr_beach_cleanup" model="esg.csr.activity">
+        <field name="name">Community Beach Cleanup</field>
+        <field name="category_id" ref="cat_csr_environment"/>
+        <field name="department_id" ref="dept_operations"/>
+        <field name="description">Volunteer beach cleanup drive.</field>
+        <field name="status">completed</field>
+        <field name="points_value">20</field>
+    </record>
+
+    <!-- Challenge -->
+    <record id="challenge_no_ac_friday" model="esg.challenge">
+        <field name="title">No-AC Friday</field>
+        <field name="category_id" ref="cat_challenge_energy"/>
+        <field name="description">Reduce air-conditioning usage every Friday for a month.</field>
+        <field name="xp">80</field>
+        <field name="difficulty">medium</field>
+        <field name="status">active</field>
+        <field name="deadline" eval="'2026-08-31'"/>
+    </record>
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_config_settings_esg" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.esg</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="EcoSphere ESG" string="EcoSphere ESG" data-key="ecosphere_esg">
+                    <h2>ESG Scoring Weights</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="esg_weight_environmental" string="Environmental Weight (%)"/>
+                                <field name="esg_weight_environmental"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="esg_weight_social" string="Social Weight (%)"/>
+                                <field name="esg_weight_social"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <label for="esg_weight_governance" string="Governance Weight (%)"/>
+                                <field name="esg_weight_governance"/>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Automation</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_auto_emission_calc"/>
+                                <label for="esg_auto_emission_calc"/>
+                                <div class="text-muted">Automatically calculate Carbon Transactions from Purchase / Manufacturing / Expense / Fleet records</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_evidence_required"/>
+                                <label for="esg_evidence_required"/>
+                                <div class="text-muted">Require proof file before approving CSR / Challenge participation</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_badge_auto_award"/>
+                                <label for="esg_badge_auto_award"/>
+                                <div class="text-muted">Automatically assign badges when unlock rules are met</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Notification Settings</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_notify_compliance"/>
+                                <label for="esg_notify_compliance"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_notify_approval"/>
+                                <label for="esg_notify_approval"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_notify_policy_reminder"/>
+                                <label for="esg_notify_policy_reminder"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_right_pane">
+                                <field name="esg_notify_badge"/>
+                                <label for="esg_notify_badge"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_esg_config_settings" model="ir.actions.act_window">
+        <field name="name">ESG Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'ecosphere_esg'}</field>
+    </record>
+</odoo>

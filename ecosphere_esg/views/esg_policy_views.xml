@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_policy_list" model="ir.ui.view">
+        <field name="name">esg.policy.list</field>
+        <field name="model">esg.policy</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="version"/>
+                <field name="effective_date"/>
+                <field name="acknowledgement_rate" widget="progressbar"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_policy_form" model="ir.ui.view">
+        <field name="name">esg.policy.form</field>
+        <field name="model">esg.policy</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_reminders" type="object" string="Send Acknowledgement Reminders" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="version"/>
+                            <field name="effective_date"/>
+                        </group>
+                        <group>
+                            <field name="document" filename="document_name"/>
+                            <field name="document_name" invisible="1"/>
+                            <field name="acknowledgement_rate" widget="progressbar"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                    <notebook>
+                        <page string="Acknowledgements">
+                            <field name="acknowledgement_ids">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="status"/>
+                                    <field name="acknowledged_date"/>
+                                    <field name="reminder_sent"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_policy" model="ir.actions.act_window">
+        <field name="name">Policies</field>
+        <field name="res_model">esg.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

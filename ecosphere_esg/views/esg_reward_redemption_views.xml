@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_reward_redemption_list" model="ir.ui.view">
+        <field name="name">esg.reward.redemption.list</field>
+        <field name="model">esg.reward.redemption</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state=='cancelled'">
+                <field name="employee_id"/>
+                <field name="reward_id"/>
+                <field name="points_spent"/>
+                <field name="date"/>
+                <field name="state"/>
+                <button name="action_cancel" type="object" string="Cancel" invisible="state != 'done'"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_esg_reward_redemption" model="ir.actions.act_window">
+        <field name="name">Reward Redemptions</field>
+        <field name="res_model">esg.reward.redemption</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

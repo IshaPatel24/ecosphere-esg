@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_challenge_list" model="ir.ui.view">
+        <field name="name">esg.challenge.list</field>
+        <field name="model">esg.challenge</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="title"/>
+                <field name="category_id"/>
+                <field name="difficulty"/>
+                <field name="xp"/>
+                <field name="deadline"/>
+                <field name="participant_count"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_challenge_kanban" model="ir.ui.view">
+        <field name="name">esg.challenge.kanban</field>
+        <field name="model">esg.challenge</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <field name="title"/>
+                <field name="xp"/>
+                <field name="difficulty"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click p-2">
+                            <strong><field name="title"/></strong>
+                            <div>XP: <field name="xp"/> | <field name="difficulty"/></div>
+                            <div>Deadline: <field name="deadline"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_esg_challenge_form" model="ir.ui.view">
+        <field name="name">esg.challenge.form</field>
+        <field name="model">esg.challenge</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_activate" type="object" string="Activate" class="btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_under_review" type="object" string="Move to Under Review" invisible="status != 'active'"/>
+                    <button name="action_complete" type="object" string="Complete" invisible="status != 'under_review'"/>
+                    <button name="action_archive_challenge" type="object" string="Archive" invisible="status == 'archived'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,active,under_review,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_participants" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="participant_count" widget="statinfo" string="Participants"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="category_id"/>
+                            <field name="difficulty"/>
+                        </group>
+                        <group>
+                            <field name="xp"/>
+                            <field name="deadline"/>
+                            <field name="evidence_required"/>
+                        </group>
+                    </group>
+                    <field name="description"/>
+                    <notebook>
+                        <page string="Participants">
+                            <field name="participation_ids">
+                                <list editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="progress"/>
+                                    <field name="approval"/>
+                                    <field name="xp_awarded"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_challenge" model="ir.actions.act_window">
+        <field name="name">Challenges</field>
+        <field name="res_model">esg.challenge</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

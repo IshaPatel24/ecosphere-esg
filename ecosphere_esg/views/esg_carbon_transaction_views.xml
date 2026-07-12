@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_carbon_transaction_list" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.list</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state=='draft'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="department_id"/>
+                <field name="source_type"/>
+                <field name="emission_factor_id"/>
+                <field name="quantity"/>
+                <field name="computed_emission" sum="Total CO2e"/>
+                <field name="auto_generated"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_carbon_transaction_form" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.form</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary" invisible="state == 'confirmed'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="department_id"/>
+                            <field name="date"/>
+                            <field name="source_type"/>
+                            <field name="source_document"/>
+                        </group>
+                        <group>
+                            <field name="emission_factor_id"/>
+                            <field name="quantity"/>
+                            <field name="computed_emission"/>
+                            <field name="auto_generated" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_esg_carbon_transaction_graph" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.graph</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <graph string="Carbon Emissions" type="bar">
+                <field name="department_id"/>
+                <field name="computed_emission" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="view_esg_carbon_transaction_pivot" model="ir.ui.view">
+        <field name="name">esg.carbon.transaction.pivot</field>
+        <field name="model">esg.carbon.transaction</field>
+        <field name="arch" type="xml">
+            <pivot string="Carbon Emissions">
+                <field name="department_id" type="row"/>
+                <field name="source_type" type="col"/>
+                <field name="computed_emission" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+    <record id="action_esg_carbon_transaction" model="ir.actions.act_window">
+        <field name="name">Carbon Transactions</field>
+        <field name="res_model">esg.carbon.transaction</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+    </record>
+</odoo>

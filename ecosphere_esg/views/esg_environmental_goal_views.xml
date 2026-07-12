@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_environmental_goal_list" model="ir.ui.view">
+        <field name="name">esg.environmental.goal.list</field>
+        <field name="model">esg.environmental.goal</field>
+        <field name="arch" type="xml">
+            <list decoration-success="status=='achieved'" decoration-danger="status=='missed'">
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="target_value"/>
+                <field name="current_value"/>
+                <field name="progress" widget="progressbar"/>
+                <field name="end_date"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_environmental_goal_form" model="ir.ui.view">
+        <field name="name">esg.environmental.goal.form</field>
+        <field name="model">esg.environmental.goal</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_recompute" type="object" string="Recompute" class="btn-secondary"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="department_id"/>
+                            <field name="metric_description"/>
+                            <field name="unit"/>
+                        </group>
+                        <group>
+                            <field name="target_value"/>
+                            <field name="current_value"/>
+                            <field name="progress" widget="progressbar"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_environmental_goal" model="ir.actions.act_window">
+        <field name="name">Environmental Goals</field>
+        <field name="res_model">esg.environmental.goal</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

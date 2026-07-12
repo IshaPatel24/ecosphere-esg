@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_esg_carbon_transaction" model="ir.sequence">
+        <field name="name">ESG Carbon Transaction</field>
+        <field name="code">esg.carbon.transaction</field>
+        <field name="prefix">CT/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

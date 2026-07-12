@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_esg_audit_list" model="ir.ui.view">
+        <field name="name">esg.audit.list</field>
+        <field name="model">esg.audit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="audit_type"/>
+                <field name="auditor_id"/>
+                <field name="date"/>
+                <field name="issue_count"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_esg_audit_form" model="ir.ui.view">
+        <field name="name">esg.audit.form</field>
+        <field name="model">esg.audit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_issues" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="issue_count" widget="statinfo" string="Issues"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="department_id"/>
+                            <field name="audit_type"/>
+                        </group>
+                        <group>
+                            <field name="auditor_id"/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <field name="findings"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_esg_audit" model="ir.actions.act_window">
+        <field name="name">Audits</field>
+        <field name="res_model">esg.audit</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
