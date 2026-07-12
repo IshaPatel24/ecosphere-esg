@@ -11,14 +11,14 @@ const DEFAULT_STATE = {
         auto_emission_calc: true
     },
     employee: {
-        name: "Yogesh Modi",
+        name: "Isha Patel",
         xp: 380,
         points: 440,
         badge_ids: [1] // Green Starter is unlocked by default
     },
     leaderboard: [
-        { name: "Yogesh Modi", dept: "Operations", xp: 380, avatar: "YM" },
-        { name: "Isha Patel", dept: "Human Resources", xp: 420, avatar: "IP" },
+        { name: "Isha Patel", dept: "Operations", xp: 380, avatar: "IP" },
+        { name: "Yogesh Modi", dept: "Human Resources", xp: 420, avatar: "YM" },
         { name: "Siddharth Sen", dept: "IT", xp: 290, avatar: "SS" },
         { name: "Ananya Rao", dept: "Operations", xp: 150, avatar: "AR" },
         { name: "Rohan Varma", dept: "IT", xp: 80, avatar: "RV" }
@@ -58,7 +58,7 @@ const DEFAULT_STATE = {
         { id: 2, name: "IT Data Privacy Review", department: "IT", auditor: "Siddharth Sen", date: "2026-07-20", issues_count: 0, status: "planned" }
     ],
     issues: [
-        { id: 1, name: "Improper disposal of battery packs in Warehouse", severity: "high", owner: "Yogesh Modi", due_date: "2026-07-10", status: "open" },
+        { id: 1, name: "Improper disposal of battery packs in Warehouse", severity: "high", owner: "Isha Patel", due_date: "2026-07-10", status: "open" },
         { id: 2, name: "Fire extinguisher inspection tag expired", severity: "medium", owner: "Ananya Rao", due_date: "2026-07-25", status: "in_progress" },
         { id: 3, name: "Weak password policy compliance issue", severity: "medium", owner: "Siddharth Sen", due_date: "2026-08-01", status: "open" }
     ],
@@ -88,6 +88,11 @@ function loadState() {
     if (saved) {
         try {
             state = JSON.parse(saved);
+            // Safeguard: Reset storage if default user changed
+            if (state.employee && state.employee.name !== DEFAULT_STATE.employee.name) {
+                state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+                saveState();
+            }
         } catch (e) {
             state = JSON.parse(JSON.stringify(DEFAULT_STATE));
         }
