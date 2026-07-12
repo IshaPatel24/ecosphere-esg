@@ -25,7 +25,7 @@ class EsgComplianceIssue(models.Model):
         ('resolved', 'Resolved'),
         ('closed', 'Closed'),
     ], default='open', required=True, tracking=True)
-    is_overdue = fields.Boolean(compute='_compute_is_overdue', store=True)
+    is_overdue = fields.Boolean(compute='_compute_is_overdue', search='_search_is_overdue')
 
     @api.depends('description')
     def _compute_name(self):
@@ -37,6 +37,20 @@ class EsgComplianceIssue(models.Model):
         today = fields.Date.context_today(self)
         for rec in self:
             rec.is_overdue = bool(rec.due_date and rec.due_date < today and rec.status in ('open', 'in_progress'))
+
+    def _search_is_overdue(self, operator, value):
+        today = fields.Date.context_today(self)
+        if operator == '=':
+            if value:
+                return [('status', 'in', ('open', 'in_progress')), ('due_date', '<', today)]
+            else:
+                return ['|', ('status', 'not in', ('open', 'in_progress')), ('due_date', '>=', today)]
+        elif operator == '!=':
+            if value:
+                return ['|', ('status', 'not in', ('open', 'in_progress')), ('due_date', '>=', today)]
+            else:
+                return [('status', 'in', ('open', 'in_progress')), ('due_date', '<', today)]
+        return []
 
     @api.model_create_multi
     def create(self, vals_list):

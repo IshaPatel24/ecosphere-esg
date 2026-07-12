@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="status" widget="statusbar"/>
+                    <field name="status" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Overdue" bg_color="text-bg-danger" invisible="not is_overdue"/>

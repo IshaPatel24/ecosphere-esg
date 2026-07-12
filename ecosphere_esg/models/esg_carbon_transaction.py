@@ -53,7 +53,7 @@ class EsgCarbonTransaction(models.Model):
         """Helper used by integration points (Purchase/Manufacturing/Expense/Fleet)
         to auto-create a Carbon Transaction when the 'Auto Emission Calculation'
         setting is enabled."""
-        if not self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.auto_emission_calc'):
+        if self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.auto_emission_calc') != 'True':
             return False
         vals = {
             'department_id': department.id if department else False,

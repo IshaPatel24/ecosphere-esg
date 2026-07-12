@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models
+from odoo.exceptions import UserError
 
 
 class EsgReportWizard(models.TransientModel):
@@ -36,10 +37,20 @@ class EsgReportWizard(models.TransientModel):
         field_names = self.env[model]._fields
         if self.department_id and 'department_id' in field_names:
             domain.append(('department_id', '=', self.department_id.id))
-        if self.date_from and 'date' in field_names:
-            domain.append(('date', '>=', self.date_from))
-        if self.date_to and 'date' in field_names:
-            domain.append(('date', '<=', self.date_to))
+            
+        date_field_map = {
+            'esg.carbon.transaction': 'date',
+            'esg.employee.participation': 'completion_date',
+            'esg.compliance.issue': 'due_date',
+            'esg.department.score': 'period_date',
+        }
+        date_field = date_field_map.get(model)
+        if date_field and date_field in field_names:
+            if self.date_from:
+                domain.append((date_field, '>=', self.date_from))
+            if self.date_to:
+                domain.append((date_field, '<=', self.date_to))
+                
         if self.employee_id and 'employee_id' in field_names:
             domain.append(('employee_id', '=', self.employee_id.id))
         if self.challenge_id and 'challenge_id' in field_names:
@@ -59,6 +70,8 @@ class EsgReportWizard(models.TransientModel):
         domain = self._build_domain(target_model)
 
         if self.export_format == 'pdf':
+            if self.report_type not in ('summary', 'custom'):
+                raise UserError("PDF export is only supported for the ESG Summary Report.")
             return self.env.ref('ecosphere_esg.action_report_esg_summary').report_action(
                 self.env[target_model].search(domain))
 

@@ -21,6 +21,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_activate" type="object" string="Activate" class="btn-primary" invisible="status != 'draft'"/>
                     <button name="action_recompute" type="object" string="Recompute" class="btn-secondary"/>
                     <field name="status" widget="statusbar"/>
                 </header>

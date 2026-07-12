@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EsgPolicy(models.Model):
@@ -28,6 +28,22 @@ class EsgPolicy(models.Model):
             total = len(rec.acknowledgement_ids)
             done = len(rec.acknowledgement_ids.filtered(lambda a: a.status == 'acknowledged'))
             rec.acknowledgement_rate = (done / total * 100.0) if total else 0.0
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        employees = self.env['hr.employee'].search([('active', '=', True)])
+        ack_vals = []
+        for rec in records:
+            for emp in employees:
+                ack_vals.append({
+                    'policy_id': rec.id,
+                    'employee_id': emp.id,
+                    'status': 'pending',
+                })
+        if ack_vals:
+            self.env['esg.policy.acknowledgement'].create(ack_vals)
+        return records
 
     def action_send_reminders(self):
         """Send policy acknowledgement reminders to employees who haven't acknowledged yet."""

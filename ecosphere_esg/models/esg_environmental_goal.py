@@ -35,13 +35,16 @@ class EsgEnvironmentalGoal(models.Model):
                 domain.append(('date', '>=', rec.start_date))
             if rec.end_date:
                 domain.append(('date', '<=', rec.end_date))
-            transactions = Carbon.search(domain) if rec.department_id else Carbon.browse()
+            transactions = Carbon.search(domain)
             rec.current_value = sum(transactions.mapped('computed_emission'))
 
     @api.depends('current_value', 'target_value')
     def _compute_progress(self):
         for rec in self:
             rec.progress = (rec.current_value / rec.target_value * 100.0) if rec.target_value else 0.0
+
+    def action_activate(self):
+        self.write({'status': 'active'})
 
     def action_recompute(self):
         self._compute_current_value()

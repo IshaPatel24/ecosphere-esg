@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSphere — ESG Management Platform</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <i class="fa-solid fa-earth-americas logo-icon"></i>
+            <span class="logo-text">EcoSphere</span>
+        </div>
+        
+        <nav class="nav-menu">
+            <li class="nav-item active" data-tab="dashboard">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </li>
+            <li class="nav-item" data-tab="environmental">
+                <i class="fa-solid fa-leaf"></i> Environmental
+            </li>
+            <li class="nav-item" data-tab="social">
+                <i class="fa-solid fa-people-group"></i> Social (CSR)
+            </li>
+            <li class="nav-item" data-tab="governance">
+                <i class="fa-solid fa-building-shield"></i> Governance
+            </li>
+            <li class="nav-item" data-tab="gamification">
+                <i class="fa-solid fa-gamepad"></i> Gamification
+            </li>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-avatar" id="current-user-avatar">YM</div>
+            <div class="user-info">
+                <span class="user-name" id="current-user-name">Yogesh Modi</span>
+                <span class="user-role">ESG Administrator</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Sticky Bar -->
+        <header class="top-bar">
+            <h1 class="page-title" id="page-header-title">ESG Overview</h1>
+            <div class="top-actions">
+                <div class="btn-secondary-action" id="stats-pill">
+                    <i class="fa-solid fa-award text-amber" style="color: var(--accent-amber);"></i>
+                    <span id="user-points-display">1,240</span> Points
+                </div>
+                <button class="btn-secondary-action" id="btn-open-settings">
+                    <i class="fa-solid fa-sliders"></i> Weights & Config
+                </button>
+            </div>
+        </header>
+
+        <!-- Pages Container -->
+        <div class="page-container">
+            
+            <!-- 1. DASHBOARD PAGE -->
+            <section class="tab-page active" id="page-dashboard">
+                <!-- Gauges Row -->
+                <div class="dashboard-grid">
+                    <!-- Overall Score -->
+                    <div class="card score-gauge-card primary-indicator">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle class="gauge-bg" cx="70" cy="70" r="60"/>
+                                <circle class="gauge-fill" id="gauge-overall-fill" cx="70" cy="70" r="60"/>
+                            </svg>
+                            <span class="gauge-value" id="gauge-overall-val">76</span>
+                        </div>
+                        <span class="gauge-title">Overall ESG Score</span>
+                        <span class="gauge-subtitle">Weighted Performance</span>
+                    </div>
+
+                    <!-- Environmental -->
+                    <div class="card score-gauge-card env-indicator">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle class="gauge-bg" cx="70" cy="70" r="60"/>
+                                <circle class="gauge-fill" id="gauge-env-fill" cx="70" cy="70" r="60"/>
+                            </svg>
+                            <span class="gauge-value" id="gauge-env-val">84</span>
+                        </div>
+                        <span class="gauge-title">Environmental Score</span>
+                        <span class="gauge-subtitle">Co2 & Energy metrics</span>
+                    </div>
+
+                    <!-- Social -->
+                    <div class="card score-gauge-card social-indicator">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle class="gauge-bg" cx="70" cy="70" r="60"/>
+                                <circle class="gauge-fill" id="gauge-social-fill" cx="70" cy="70" r="60"/>
+                            </svg>
+                            <span class="gauge-value" id="gauge-social-val">65</span>
+                        </div>
+                        <span class="gauge-title">Social Score</span>
+                        <span class="gauge-subtitle">CSR & Engagement</span>
+                    </div>
+
+                    <!-- Governance -->
+                    <div class="card score-gauge-card gov-indicator">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg">
+                                <circle class="gauge-bg" cx="70" cy="70" r="60"/>
+                                <circle class="gauge-fill" id="gauge-gov-fill" cx="70" cy="70" r="60"/>
+                            </svg>
+                            <span class="gauge-value" id="gauge-gov-val">80</span>
+                        </div>
+                        <span class="gauge-title">Governance Score</span>
+                        <span class="gauge-subtitle">Policy & Audits</span>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <!-- Main ESG Score Trend -->
+                    <div class="card">
+                        <div class="section-title">Department Scores Comparison</div>
+                        <div class="bar-chart-visual" id="department-scores-chart">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                    <!-- Carbon Emissions Sources -->
+                    <div class="card">
+                        <div class="section-title">Emissions by Source (kg CO2e)</div>
+                        <div class="bar-chart-visual" id="emissions-sources-chart">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. ENVIRONMENTAL PAGE -->
+            <section class="tab-page" id="page-environmental">
+                <div class="split-layout">
+                    <!-- Form to add transactions -->
+                    <div class="card env-indicator" style="height: fit-content;">
+                        <h3 class="section-title">New Carbon Transaction</h3>
+                        <form id="form-carbon-transaction">
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <label for="tx-dept">Department</label>
+                                <select id="tx-dept" required>
+                                    <option value="dept_operations">Operations</option>
+                                    <option value="dept_it">IT</option>
+                                    <option value="dept_hr">Human Resources</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <label for="tx-source">Source Type</label>
+                                <select id="tx-source" required>
+                                    <option value="fleet">Fleet Fuel Log</option>
+                                    <option value="expense">Expense Travel</option>
+                                    <option value="purchase">Product Purchase</option>
+                                    <option value="manufacturing">Manufacturing Order</option>
+                                    <option value="manual">Manual Record</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <label for="tx-factor">Emission Factor</label>
+                                <select id="tx-factor" required>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <label for="tx-quantity">Quantity</label>
+                                <input type="number" id="tx-quantity" min="0.1" step="0.1" value="1.0" required>
+                            </div>
+                            <button type="submit" class="btn-primary-action" style="width: 100%; padding: 12px 0;">Add Transaction</button>
+                        </form>
+                    </div>
+
+                    <!-- Right Side: Transactions & Goals -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Goals -->
+                        <div class="card">
+                            <h3 class="section-title">Sustainability Goals</h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Goal</th>
+                                            <th>Department</th>
+                                            <th>Target Value</th>
+                                            <th>Current Value</th>
+                                            <th>Progress</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-goals-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Carbon Transactions Table -->
+                        <div class="card">
+                            <h3 class="section-title">Carbon Log</h3>
+                            <div class="table-container" style="max-height: 400px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Date</th>
+                                            <th>Department</th>
+                                            <th>Source</th>
+                                            <th>Factor</th>
+                                            <th>Quantity</th>
+                                            <th>CO2e (kg)</th>
+                                            <th>State</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-transactions-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. SOCIAL PAGE -->
+            <section class="tab-page" id="page-social">
+                <div class="split-layout">
+                    <!-- CSR Activities List -->
+                    <div class="card social-indicator" style="height: fit-content;">
+                        <h3 class="section-title">Active CSR Campaigns</h3>
+                        <div id="csr-activities-list" style="display: flex; flex-direction: column; gap: 14px;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Employee Participation Approval Queue -->
+                    <div class="card">
+                        <h3 class="section-title">Participation Approvals</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>CSR Activity</th>
+                                        <th>Completion Date</th>
+                                        <th>Proof File</th>
+                                        <th>Points Value</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-participation-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. GOVERNANCE PAGE -->
+            <section class="tab-page" id="page-governance">
+                <div class="split-layout">
+                    <!-- Left: Policies list -->
+                    <div class="card gov-indicator" style="height: fit-content;">
+                        <h3 class="section-title">ESG Policies & Versioning</h3>
+                        <div id="policies-list" style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Audits & Compliance Issues -->
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        <!-- Audits -->
+                        <div class="card">
+                            <h3 class="section-title">Scheduled Audits</h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Audit Name</th>
+                                            <th>Department</th>
+                                            <th>Auditor</th>
+                                            <th>Date</th>
+                                            <th>Issues Logged</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-audits-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Compliance Issues -->
+                        <div class="card">
+                            <h3 class="section-title">Compliance Issues Tracker</h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Issue Name</th>
+                                            <th>Severity</th>
+                                            <th>Owner</th>
+                                            <th>Due Date</th>
+                                            <th>Overdue</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-issues-body">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. GAMIFICATION PAGE -->
+            <section class="tab-page" id="page-gamification">
+                <!-- Top Row: Active challenges & Leaderboard -->
+                <div class="charts-grid">
+                    <!-- Active Challenges -->
+                    <div class="card">
+                        <h3 class="section-title">Sustainability Challenges</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Challenge Title</th>
+                                        <th>Category</th>
+                                        <th>Reward</th>
+                                        <th>Difficulty</th>
+                                        <th>Deadline</th>
+                                        <th>Progress</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-challenges-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Employee Leaderboard -->
+                    <div class="card primary-indicator">
+                        <h3 class="section-title">Department Leaderboard</h3>
+                        <div class="leaderboard-list" id="leaderboard-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row: Badges and Rewards -->
+                <div class="charts-grid">
+                    <!-- Badges Showcase -->
+                    <div class="card">
+                        <h3 class="section-title">Badges Catalogue</h3>
+                        <div class="badges-grid" id="badges-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Redeemable Rewards -->
+                    <div class="card">
+                        <h3 class="section-title">Redeemable Rewards (Stock Aware)</h3>
+                        <div class="rewards-grid" id="rewards-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- SETTINGS / CONFIG OVERLAY MODAL -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-sliders"></i> ESG System Configuration</h3>
+                <i class="fa-solid fa-xmark modal-close" id="settings-modal-close"></i>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Weights -->
+                <div class="card primary-indicator" style="padding: 16px;">
+                    <h4 style="font-size: 13px; font-weight:600; margin-bottom:12px;">ESG Calculation Weights (%)</h4>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <div class="flex-between">
+                            <label for="weight-env">Environmental Weight</label>
+                            <span id="weight-env-val" style="font-weight:700;">40%</span>
+                        </div>
+                        <input type="range" id="weight-env" min="0" max="100" value="40" step="5">
+                    </div>
+                    <div class="form-group" style="margin-bottom:12px;">
+                        <div class="flex-between">
+                            <label for="weight-social">Social Weight</label>
+                            <span id="weight-social-val" style="font-weight:700;">30%</span>
+                        </div>
+                        <input type="range" id="weight-social" min="0" max="100" value="30" step="5">
+                    </div>
+                    <div class="form-group">
+                        <div class="flex-between">
+                            <label for="weight-gov">Governance Weight</label>
+                            <span id="weight-gov-val" style="font-weight:700;">30%</span>
+                        </div>
+                        <input type="range" id="weight-gov" min="0" max="100" value="30" step="5">
+                    </div>
+                    <div id="weight-error-msg" style="color:var(--accent-red); font-size:11px; margin-top:8px; display:none;">Total weights must equal 100%!</div>
+                </div>
+
+                <!-- Toggles -->
+                <div class="card" style="padding: 16px; display:flex; flex-direction:column; gap:12px;">
+                    <h4 style="font-size: 13px; font-weight:600;">Automation & Guard Rules</h4>
+                    
+                    <div class="flex-between">
+                        <div>
+                            <div style="font-size:13px; font-weight:500;">Require Evidence Upload</div>
+                            <div style="font-size:11px; color:var(--text-muted);">Proof files required before approval</div>
+                        </div>
+                        <input type="checkbox" id="toggle-evidence" checked style="width:20px; height:20px; accent-color:var(--primary);">
+                    </div>
+
+                    <div class="flex-between">
+                        <div>
+                            <div style="font-size:13px; font-weight:500;">Badge Auto-Award</div>
+                            <div style="font-size:11px; color:var(--text-muted);">Award badges instantly on criteria unlock</div>
+                        </div>
+                        <input type="checkbox" id="toggle-badges" checked style="width:20px; height:20px; accent-color:var(--primary);">
+                    </div>
+
+                    <div class="flex-between">
+                        <div>
+                            <div style="font-size:13px; font-weight:500;">Auto Emission Calculation</div>
+                            <div style="font-size:11px; color:var(--text-muted);">Create carbon logs from document creation</div>
+                        </div>
+                        <input type="checkbox" id="toggle-auto-calc" checked style="width:20px; height:20px; accent-color:var(--primary);">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary-action" id="settings-cancel">Cancel</button>
+                <button class="btn-primary-action" id="settings-save">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOCK UPLOAD / ATTACH PROOF DIALOG -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="upload-modal-title">Attach Proof of Work</h3>
+                <i class="fa-solid fa-xmark modal-close" id="upload-modal-close"></i>
+            </div>
+            
+            <form id="form-upload-proof">
+                <input type="hidden" id="upload-target-type">
+                <input type="hidden" id="upload-target-id">
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label for="proof-file">Select Proof Image/Document</label>
+                    <input type="file" id="proof-file" accept="image/*,application/pdf" required style="background:transparent;">
+                </div>
+                
+                <div class="modal-footer" style="margin-top:16px;">
+                    <button type="button" class="btn-secondary-action" id="upload-cancel">Cancel</button>
+                    <button type="submit" class="btn-primary-action">Submit Proof</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Local logic script -->
+    <script src="app.js"></script>
+</body>
+</html>

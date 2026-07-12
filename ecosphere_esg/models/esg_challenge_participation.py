@@ -27,8 +27,11 @@ class EsgChallengeParticipation(models.Model):
     ]
 
     def action_approve(self):
+        evidence_required = self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.evidence_required') == 'True'
         for rec in self:
-            if rec.challenge_id.evidence_required and not rec.proof:
+            if rec.approval != 'pending':
+                continue
+            if (rec.challenge_id.evidence_required or evidence_required) and not rec.proof:
                 raise ValidationError("Proof is required before this challenge can be approved.")
             rec.xp_awarded = rec.challenge_id.xp
             rec.approval = 'approved'
@@ -45,6 +48,8 @@ class EsgChallengeParticipation(models.Model):
 
     def action_reject(self):
         for rec in self:
+            if rec.approval != 'pending':
+                continue
             rec.approval = 'rejected'
             rec.xp_awarded = 0
             if rec.employee_id.user_id:

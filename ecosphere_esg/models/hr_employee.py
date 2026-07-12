@@ -28,7 +28,7 @@ class HrEmployeeEsg(models.Model):
         """Auto-award badges when Badge Auto-Award setting is enabled and
         an employee's XP / completed counts satisfy the badge's unlock rule."""
         auto_award = self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.badge_auto_award')
-        if not auto_award:
+        if auto_award != 'True':
             return
         badges = self.env['esg.badge'].search([('active', '=', True)])
         for emp in self:
@@ -70,11 +70,13 @@ class HrEmployeeEsg(models.Model):
         })
 
     def action_view_leaderboard(self):
+        view_id = self.env.ref('ecosphere_esg.view_hr_employee_list_leaderboard').id
         return {
             'type': 'ir.actions.act_window',
             'name': 'Leaderboard',
             'res_model': 'hr.employee',
             'view_mode': 'list',
+            'view_id': view_id,
             'domain': [('xp', '>', 0)],
             'context': {'search_default_group_by_xp': 0},
         }

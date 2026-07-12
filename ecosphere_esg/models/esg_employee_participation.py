@@ -22,8 +22,10 @@ class EsgEmployeeParticipation(models.Model):
     completion_date = fields.Date(default=fields.Date.context_today)
 
     def action_approve(self):
-        evidence_required = self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.evidence_required')
+        evidence_required = self.env['ir.config_parameter'].sudo().get_param('ecosphere_esg.evidence_required') == 'True'
         for rec in self:
+            if rec.approval_status != 'pending':
+                continue
             if evidence_required and not rec.proof:
                 raise ValidationError("Proof is required before this participation can be approved.")
             rec.points_earned = rec.activity_id.points_value
@@ -40,6 +42,8 @@ class EsgEmployeeParticipation(models.Model):
 
     def action_reject(self):
         for rec in self:
+            if rec.approval_status != 'pending':
+                continue
             rec.approval_status = 'rejected'
             rec.points_earned = 0
             if rec.employee_id.user_id:

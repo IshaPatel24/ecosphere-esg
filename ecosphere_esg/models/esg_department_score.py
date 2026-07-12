@@ -17,9 +17,9 @@ class EsgDepartmentScore(models.Model):
     @api.depends('environmental_score', 'social_score', 'governance_score')
     def _compute_total_score(self):
         ICP = self.env['ir.config_parameter'].sudo()
-        env_w = float(ICP.get_param('ecosphere_esg.weight_environmental', 40))
-        soc_w = float(ICP.get_param('ecosphere_esg.weight_social', 30))
-        gov_w = float(ICP.get_param('ecosphere_esg.weight_governance', 30))
+        env_w = float(ICP.get_param('ecosphere_esg.weight_environmental') or 40.0)
+        soc_w = float(ICP.get_param('ecosphere_esg.weight_social') or 30.0)
+        gov_w = float(ICP.get_param('ecosphere_esg.weight_governance') or 30.0)
         total_w = env_w + soc_w + gov_w or 1.0
         for rec in self:
             rec.total_score = (
